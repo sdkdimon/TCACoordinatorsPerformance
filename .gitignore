@@ -1,3 +1,6 @@
 xcuserdata
 .DS_Store
-App/.swiftpm
+.swiftpm
+.swift-format.json
+.swift-version
+.swiftformat

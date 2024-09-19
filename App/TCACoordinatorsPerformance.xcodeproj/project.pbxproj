@@ -17,6 +17,8 @@
 		8AE1C08E2C5BA6C500B54419 /* TCACoordinatorsPerformancee in Resources */ = {isa = PBXBuildFile; fileRef = 8A93D8152C5B9E4300C21C6E /* TCACoordinatorsPerformancee */; };
 		8AE1C0952C5BA75A00B54419 /* UnobservableApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8AE1C0932C5BA75500B54419 /* UnobservableApp.swift */; };
 		8AE1C0972C5BA79000B54419 /* UnobservableState in Frameworks */ = {isa = PBXBuildFile; productRef = 8AE1C0962C5BA79000B54419 /* UnobservableState */; };
+		8AF467B62C9C31A300C652B5 /* TCACoordinators in Resources */ = {isa = PBXBuildFile; fileRef = 8AF467B52C9C31A200C652B5 /* TCACoordinators */; };
+		8AF467B72C9C31A300C652B5 /* TCACoordinators in Resources */ = {isa = PBXBuildFile; fileRef = 8AF467B52C9C31A200C652B5 /* TCACoordinators */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,6 +29,7 @@
 		8A93D8152C5B9E4300C21C6E /* TCACoordinatorsPerformancee */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TCACoordinatorsPerformancee; path = ..; sourceTree = "<group>"; };
 		8AE1C0922C5BA6C500B54419 /* Unobservable.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Unobservable.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		8AE1C0932C5BA75500B54419 /* UnobservableApp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnobservableApp.swift; sourceTree = "<group>"; };
+		8AF467B52C9C31A200C652B5 /* TCACoordinators */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = TCACoordinators; path = ../TCACoordinators; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,6 +55,7 @@
 		8A2C629B2C5B99D7002365CB = {
 			isa = PBXGroup;
 			children = (
+				8AF467B52C9C31A200C652B5 /* TCACoordinators */,
 				8A93D8152C5B9E4300C21C6E /* TCACoordinatorsPerformancee */,
 				8A2C62A62C5B99D7002365CB /* TCACoordinatorsPerformance */,
 				8A2C62A52C5B99D7002365CB /* Products */,
@@ -178,6 +182,7 @@
 			files = (
 				8A2C62AF2C5B99D8002365CB /* Preview Assets.xcassets in Resources */,
 				8A2C62AC2C5B99D8002365CB /* Assets.xcassets in Resources */,
+				8AF467B62C9C31A300C652B5 /* TCACoordinators in Resources */,
 				8A93D8162C5B9E4300C21C6E /* TCACoordinatorsPerformancee in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -188,6 +193,7 @@
 			files = (
 				8AE1C08C2C5BA6C500B54419 /* Preview Assets.xcassets in Resources */,
 				8AE1C08D2C5BA6C500B54419 /* Assets.xcassets in Resources */,
+				8AF467B72C9C31A300C652B5 /* TCACoordinators in Resources */,
 				8AE1C08E2C5BA6C500B54419 /* TCACoordinatorsPerformancee in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
