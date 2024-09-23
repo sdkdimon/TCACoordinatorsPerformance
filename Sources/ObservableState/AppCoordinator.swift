@@ -1,5 +1,5 @@
 import SwiftUI
-import ComposableArchitecture
+@_spi(Internals) import ComposableArchitecture
 import TCACoordinators
 
 extension Screen.State: Identifiable {
@@ -24,11 +24,11 @@ public struct AppCoordinator {
       routes: [.root(.landing(.init()), embedInNavigationView: true)]
     )
     
-    var routes: IdentifiedArrayOf<Route<Screen.State>>
+    var routes: [Route<Screen.State>]
   }
   
   public enum Action {
-    case router(IdentifiedRouterActionOf<Screen>)
+    case router(IndexedRouterActionOf<Screen>)
   }
   
   public init() {}
@@ -53,48 +53,59 @@ public struct AppCoordinator {
 }
 
 public struct AppCoordinatorView: View {
-  public  let store: StoreOf<AppCoordinator>
+  @Perception.Bindable public var store: StoreOf<AppCoordinator>
   
   public init(store: StoreOf<AppCoordinator>) {
     self.store = store
   }
-  
+    
   public var body: some View {
-    TCARouter(store.scope(state: \.routes, action: \.router)) { screen in
-      switch screen.case {
-      case let .landing(store):
-        LandingFeatureView(store: store)
-      case let .step1(store):
-        Step1FeatureView(store: store)
-      case let .step2(store):
-        Step2FeatureView(store: store)
-        
+//    var storeBindable: _StoreBindable_Perception<AppCoordinator.State, AppCoordinator.Action, [Route<Screen.State>]> = $store.routes
+//    var routesBinding: Binding<[Route<Screen.State>]> = storeBindable.sending(\.router.updateRoutes)
+    WithPerceptionTracking {
+// Here i passing an observable binding of [Route<Screen.State>]
+      Router($store.routes.sending(\.router.updateRoutes)) { screenState, index in
+        WithPerceptionTracking {
+          let store = self.store.scopedStore(state: screenState, index: index)
+          switch store.case {
+          case let .landing(store):
+            LandingFeatureView(store: store)
+          case let .step1(store):
+            Step1FeatureView(store: store)
+          case let .step2(store):
+            Step2FeatureView(store: store)
+          }
+        }
       }
     }
   }
 }
 
-extension Route: ComposableArchitecture.ObservableState, Observation.Observable {
-  public var _$id: ComposableArchitecture.ObservableStateID {
-    switch self {
-    case let .push(state):
-      return ._$id(for: state)._$tag(0)
-    case .sheet:
-      return ObservableStateID()._$tag(1)
-    case .cover:
-      return ObservableStateID()._$tag(2)
+extension Store where State: ObservableState, State == AppCoordinator.State, Action == AppCoordinator.Action {
+  
+  func scopedStore(state: Screen.State, index: Int) -> StoreOf<Screen> {
+    let stateKeyPath: KeyPath<AppCoordinator.State, Route<Screen.State>?> = \.routes[safe: index]
+    let actionCaseKeyPath: CaseKeyPath<AppCoordinator.Action, IndexedRouterActionOf<Screen>> = \.router
+    let storeId:ScopeID<AppCoordinator.State, AppCoordinator.Action> = self.id(state: stateKeyPath, action: actionCaseKeyPath)
+    let toState: ToState<AppCoordinator.State, Screen.State> =
+    ToState { rootState in
+// If we uncomment this the whole stack will start recomputing again
+//      return rootState[keyPath: stateKeyPath]?.screen ?? state
+//If just return a state then stack will NOT be recomputed BUT the actions from views STOP's modifying own state
+// only AppCoordinator.State modified
+      return state
+    }
+    return self.scope(id: storeId, state: toState) { ch in
+        .router(.routeAction(id: index, action: ch))
+    } isInvalid: {
+      $0[keyPath: stateKeyPath] == nil
     }
   }
-  
-  public mutating func _$willModify() {
-    switch self {
-    case var .push(state):
-      ComposableArchitecture._$willModify(&state)
-      self = .push(state)
-    case .sheet:
-      break
-    case .cover:
-      break
-    }
+}
+
+extension Collection {
+  /// Returns the element at the specified index if it is within bounds, otherwise nil.
+  subscript(safe index: Index) -> Element? {
+    indices.contains(index) ? self[index] : nil
   }
 }
