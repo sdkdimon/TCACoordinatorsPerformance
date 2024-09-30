@@ -12,6 +12,7 @@ let package = Package(
         .library(name: "ObservableState", targets: ["ObservableState"]),
         .library(name: "UnobservableState", targets: ["UnobservableState"]),
         .library(name: "Helpers", targets: ["Helpers"]),
+        .library(name: "ObservableScreens", targets: ["ObservableScreens"]),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture", branch: "main"),
@@ -22,6 +23,7 @@ let package = Package(
             name: "ObservableState",
             dependencies: [
               "Helpers",
+              "ObservableScreens",
               .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
               .product(name: "TCACoordinators", package: "TCACoordinators"),
             ]
@@ -34,6 +36,17 @@ let package = Package(
               .product(name: "TCACoordinators", package: "TCACoordinators"),
             ]
         ),
-        .target(name: "Helpers")
+        .target(
+          name: "Helpers"
+        ),
+        .target(
+          name: "ObservableScreens",
+          dependencies: [
+            "Helpers",
+            .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            .product(name: "TCACoordinators", package: "TCACoordinators"),
+          ]
+        )
+        
     ]
 )

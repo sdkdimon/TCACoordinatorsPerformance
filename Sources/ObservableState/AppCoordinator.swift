@@ -1,6 +1,7 @@
 import SwiftUI
 import ComposableArchitecture
 import TCACoordinators
+import ObservableScreens
 
 extension Screen.State: Identifiable {
   public var id: UUID {
@@ -70,31 +71,6 @@ public struct AppCoordinatorView: View {
         Step2FeatureView(store: store)
         
       }
-    }
-  }
-}
-
-extension Route: ComposableArchitecture.ObservableState, Observation.Observable {
-  public var _$id: ComposableArchitecture.ObservableStateID {
-    switch self {
-    case let .push(state):
-      return ._$id(for: state)._$tag(0)
-    case .sheet:
-      return ObservableStateID()._$tag(1)
-    case .cover:
-      return ObservableStateID()._$tag(2)
-    }
-  }
-  
-  public mutating func _$willModify() {
-    switch self {
-    case var .push(state):
-      ComposableArchitecture._$willModify(&state)
-      self = .push(state)
-    case .sheet:
-      break
-    case .cover:
-      break
     }
   }
 }
